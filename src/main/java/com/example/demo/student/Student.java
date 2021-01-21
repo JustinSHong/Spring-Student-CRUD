@@ -8,10 +8,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -31,16 +30,16 @@ public class Student {
     )
     private Long id;
 
-    @NotNull(message = "Name must not be empty")
-    @NotBlank(message = "Name must not be empty")
-    @Size(min = 1)
+    @NotNull(message = "Name must not be null")
+    @NotEmpty(message = "Name must not be empty")
     private String name;
 
-    @NotNull(message = "Email must not be empty")
+    @NotNull(message = "Email must not be null")
+    @NotEmpty(message = "Email must not be empty")
     @Email(message = "Please provide a valid email")
     private String email;
 
-    @NotNull(message = "Birthdate must not be empty")
+    @NotNull(message = "Birthdate must not be null")
     @Past(message = "Birthdate must be in the past")
 //    @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Birthdate must be in YYYY-MM-DD format")
     private LocalDate dob;
