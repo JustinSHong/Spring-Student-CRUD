@@ -7,11 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
 @Table
+@NotNull
 public class Student {
     @Id
     @SequenceGenerator(
@@ -24,9 +30,21 @@ public class Student {
             generator = "student_sequence"
     )
     private Long id;
+
+    @NotNull(message = "Name must not be empty")
+    @NotBlank(message = "Name must not be empty")
+    @Size(min = 1)
     private String name;
+
+    @NotNull(message = "Email must not be empty")
+    @Email(message = "Please provide a valid email")
     private String email;
+
+    @NotNull(message = "Birthdate must not be empty")
+    @Past(message = "Birthdate must be in the past")
+//    @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Birthdate must be in YYYY-MM-DD format")
     private LocalDate dob;
+
     @Transient // don't make this a column in the db
     private Integer age;
 
