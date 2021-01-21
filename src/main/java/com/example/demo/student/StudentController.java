@@ -1,6 +1,7 @@
 package com.example.demo.student;
 
 import com.example.demo.exception.BadRequestException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/student")
+@Validated
 public class StudentController {
     private final StudentService studentService;
 
@@ -43,8 +46,8 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     public void updateStudent(
             @PathVariable("studentId") Long studentId,
-            @RequestParam("name") String name,
-            @RequestParam("email") String email
+            @RequestParam("name") @NotEmpty(message = "Please provide a name") String name,
+            @RequestParam("email") @NotEmpty(message = "Please provide an email") String email
     ) {
         studentService.updateStudent(studentId, name, email);
     }
