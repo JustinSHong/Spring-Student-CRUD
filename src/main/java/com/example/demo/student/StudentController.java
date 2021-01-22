@@ -2,6 +2,7 @@ package com.example.demo.student;
 
 import com.example.demo.exception.BadRequestException;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping("api/v1/student/")
 @Validated
 public class StudentController {
     private final StudentService studentService;
@@ -30,6 +32,12 @@ public class StudentController {
     @GetMapping
     public List<Student> getStudents() {
         return studentService.getStudents();
+    }
+
+    @GetMapping(path = "{studentId}")
+    @ExceptionHandler(value = NoSuchElementException.class)
+    public Student getStudentById(@PathVariable("studentId") Long studentId) {
+        return studentService.getStudentById(studentId);
     }
 
     @PostMapping
@@ -44,6 +52,7 @@ public class StudentController {
     }
 
     @PutMapping(path = "{studentId}")
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public void updateStudent(
             @PathVariable("studentId") Long studentId,
             @RequestParam("name") @NotEmpty(message = "Please provide a name") String name,

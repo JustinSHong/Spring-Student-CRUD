@@ -18,11 +18,22 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Student getStudentById(Long studentId) {
+        Optional<Student> studentToUpdate = studentRepository.findById(studentId);
+
+        if (studentToUpdate.isEmpty()) {
+            throw new IllegalStateException("Student with id " + studentId + " does not exist");
+        }
+
+        Student student = studentToUpdate.get();
+        return student;
+    }
+
     public void addNewStudent(Student student) {
         Optional<Student> studentByEmail = studentRepository.findStudentByEmail(student.getEmail());
 
         if (studentByEmail.isPresent()) {
-            throw new IllegalStateException( student.getEmail() + " already exists");
+            throw new IllegalStateException(student.getEmail() + " already exists");
         }
         studentRepository.save(student);
     }

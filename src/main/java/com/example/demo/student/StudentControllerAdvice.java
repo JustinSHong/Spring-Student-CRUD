@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -57,5 +58,14 @@ public class StudentControllerAdvice extends ResponseEntityExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(body, headers, status);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "add missing parameters");
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
