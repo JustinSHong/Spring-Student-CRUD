@@ -20,6 +20,15 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class StudentControllerAdvice extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(value = IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException e) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", e.getMessage());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ConstraintViolationException e) {
         Map<String, Object> body = new HashMap<>();
