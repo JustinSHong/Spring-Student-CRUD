@@ -19,13 +19,24 @@ public class StudentService {
     }
 
     public Student getStudentById(Long studentId) {
-        Optional<Student> studentToUpdate = studentRepository.findById(studentId);
+        Optional<Student> studentById = studentRepository.findById(studentId);
 
-        if (studentToUpdate.isEmpty()) {
+        if (studentById.isEmpty()) {
             throw new IllegalStateException("Student with id " + studentId + " does not exist");
         }
 
-        Student student = studentToUpdate.get();
+        Student student = studentById.get();
+        return student;
+    }
+
+    public Student getStudentByEmail(String email) {
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(email);
+
+        if (studentByEmail.isEmpty()) {
+            throw new IllegalStateException("Student with email " + email + " does not exist");
+        }
+
+        Student student = studentByEmail.get();
         return student;
     }
 

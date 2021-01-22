@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("api/v1/student/")
+@RequestMapping("api/v1/student")
 @Validated
 public class StudentController {
     private final StudentService studentService;
@@ -38,6 +39,11 @@ public class StudentController {
     @ExceptionHandler(value = NoSuchElementException.class)
     public Student getStudentById(@PathVariable("studentId") Long studentId) {
         return studentService.getStudentById(studentId);
+    }
+
+    @GetMapping(path = "email")
+    public Student getStudentByEmail(@RequestParam("email") @Email @NotEmpty(message = "Please provide an email") String email) {
+        return studentService.getStudentByEmail(email);
     }
 
     @PostMapping
